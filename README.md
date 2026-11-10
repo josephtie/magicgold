@@ -77,11 +77,17 @@ docker compose up -d postgres redis keycloak backend
 ## État d'avancement
 
 - ✅ Phase 1 — documents de spécification 00 → 20 (complet)
-- ✅ Phase 2 — scaffold backend : entités V1, migration Flyway V1, sécurité Keycloak,
-  isolation multi-tenant, API de référence (Merchant, Product, Order), tests verts
-- ⏳ Phase 3 — domaines métier complets (paiement, caisse, stock avancé, reporting)
-- ⏳ Phase 4 — paiements (interface `PaymentProvider` + adaptateur mock → réel)
-- ⏳ Phase 5 — application mobile Flutter (offline-first)
+- ✅ Phase 2 — scaffold backend : 20 entités V1, migration Flyway (validée sur PostgreSQL 15 réel),
+  sécurité Keycloak + isolation multi-tenant, API de référence (Merchant, Product, Order)
+- ✅ Phase 3 — paiements : port `PaymentProvider` + adaptateur mock + webhooks idempotents
+- ✅ Phase 4 — caisse : ouverture/clôture de session, écart attendu vs compté
+- ✅ Reporting — CA, encaissements par méthode, réconciliation
+- ✅ Mobile Flutter — squelette (Riverpod + go_router + dio + secure storage)
+- ⏳ Paiements réels (CinetPay/FeexPay) — en attente des clés sandbox
+- ⏳ Mobile : écrans complets, auth Keycloak PKCE, offline-first (Drift + file de synchro)
+
+**Vérification** : `mvn test` → 10 tests verts · migration Flyway OK sur PostgreSQL ·
+`flutter analyze` → clean · `flutter test` → vert.
 
 ## Notes de conception
 
