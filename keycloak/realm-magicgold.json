@@ -1,0 +1,59 @@
+{
+  "realm": "magicgold",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "resetPasswordAllowed": true,
+  "roles": {
+    "realm": [
+      { "name": "SUPER_ADMIN" },
+      { "name": "ADMIN" },
+      { "name": "MERCHANT_MANAGER" },
+      { "name": "MERCHANT_OPERATOR" },
+      { "name": "SUPPORT" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "magic-gold-api",
+      "name": "MAGIC GOLD API (resource server)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "bearerOnly": true,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false
+    },
+    {
+      "clientId": "magic-gold-mobile",
+      "name": "MAGIC GOLD Mobile (public, PKCE)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "magicgold://callback",
+        "http://localhost"
+      ],
+      "webOrigins": [ "+" ],
+      "protocolMappers": [
+        {
+          "name": "merchant_id",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "merchant_id",
+            "claim.name": "merchant_id",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "userinfo.token.claim": "false"
+          }
+        }
+      ]
+    }
+  ]
+}

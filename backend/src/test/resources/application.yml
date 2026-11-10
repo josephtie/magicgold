@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:magicgold;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+  flyway:
+    enabled: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8083/realms/magicgold
+          jwk-set-uri: http://localhost:8083/realms/magicgold/protocol/openid-connect/certs
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+server:
+  port: 0

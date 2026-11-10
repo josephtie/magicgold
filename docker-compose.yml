@@ -1,0 +1,76 @@
+name: magic-gold
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: magicgold-postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:-magicgold}
+      POSTGRES_USER: ${DB_USERNAME:-magicgold}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-magicgold}
+    ports:
+      - "5432:5432"
+    volumes:
+      - mg_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-magicgold} -d ${DB_NAME:-magicgold}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: magicgold-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - mg_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.1
+    container_name: magicgold-keycloak
+    command: start-dev --http-port 8083
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: ${DB_USERNAME:-magicgold}
+      KC_DB_PASSWORD: ${DB_PASSWORD:-magicgold}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_HOSTNAME: localhost
+    ports:
+      - "8083:8083"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: ./backend
+    container_name: magicgold-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-magicgold}
+      DB_USERNAME: ${DB_USERNAME:-magicgold}
+      DB_PASSWORD: ${DB_PASSWORD:-magicgold}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      KEYCLOAK_ISSUER_URI: http://keycloak:8083/realms/magicgold
+      KEYCLOAK_JWK_SET_URI: http://keycloak:8083/realms/magicgold/protocol/openid-connect/certs
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  mg_postgres_data:
+  mg_redis_data:
