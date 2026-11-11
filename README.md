@@ -83,11 +83,13 @@ docker compose up -d postgres redis keycloak backend
 - ✅ Phase 4 — caisse : ouverture/clôture de session, écart attendu vs compté
 - ✅ Reporting — CA, encaissements par méthode, réconciliation
 - ✅ Mobile Flutter — squelette (Riverpod + go_router + dio + secure storage)
+- ✅ Mobile auth — OIDC PKCE (flutter_appauth) + stockage sécurisé des jetons + redirect Android
+- ✅ Mobile offline-first — base Drift (SQLite) + file de synchronisation (SyncQueue)
 - ⏳ Paiements réels (CinetPay/FeexPay) — en attente des clés sandbox
-- ⏳ Mobile : écrans complets, auth Keycloak PKCE, offline-first (Drift + file de synchro)
+- ⏳ Mobile : écrans complets branchés sur l'API + rejeu de la file de synchro
 
 **Vérification** : `mvn test` → 10 tests verts · migration Flyway OK sur PostgreSQL ·
-`flutter analyze` → clean · `flutter test` → vert.
+`flutter analyze` → clean · `flutter test` → 5 tests verts.
 
 ## Notes de conception
 
