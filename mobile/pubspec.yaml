@@ -39,6 +39,8 @@ dependencies:
   dio: ^5.7.0
   flutter_secure_storage: ^9.2.2
   flutter_appauth: ^8.0.0
+  drift: ^2.20.0
+  drift_flutter: ^0.2.1
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +52,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  drift_dev: ^2.20.0
+  build_runner: ^2.4.11
+  sqlite3: ^2.9.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
