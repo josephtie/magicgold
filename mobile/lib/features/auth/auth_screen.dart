@@ -1,14 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Écran d'authentification Keycloak (OIDC PKCE) — à câbler sur le flux réel.
-class AuthScreen extends StatelessWidget {
+import 'auth_controller.dart';
+
+/// Écran de connexion Keycloak (OIDC PKCE).
+class AuthScreen extends ConsumerWidget {
   const AuthScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(authControllerProvider);
+    final isLoggedIn = state is AuthAuthenticated;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Connexion')),
-      body: const Center(child: Text('Connexion Keycloak (à implémenter)')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(isLoggedIn ? 'Connecté' : 'Connexion Keycloak'),
+            const SizedBox(height: 12),
+            FilledButton(
+              onPressed: () => isLoggedIn
+                  ? ref.read(authControllerProvider.notifier).logout()
+                  : ref.read(authControllerProvider.notifier).login(),
+              child: Text(isLoggedIn ? 'Se déconnecter' : 'Se connecter'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -10,4 +10,15 @@ class AppConfig {
   );
 
   static const String currency = 'XOF';
+
+  /// Émetteur Keycloak (surchargeable via --dart-define=KEYCLOAK_ISSUER=...).
+  static const String keycloakIssuer = String.fromEnvironment(
+    'KEYCLOAK_ISSUER',
+    defaultValue: 'http://10.0.2.2:8083/realms/magicgold',
+  );
+
+  static const String keycloakClientId = 'magic-gold-mobile';
+
+  /// URI de redirection (schéma déclaré côté Android/iOS pour le flux PKCE).
+  static const String redirectUri = 'magicgold://callback';
 }

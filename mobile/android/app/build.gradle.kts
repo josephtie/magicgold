@@ -27,6 +27,9 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // Schéma de redirection OIDC (doit correspondre à AppConfig.redirectUri)
+        manifestPlaceholders["appAuthRedirectScheme"] = "magicgold"
     }
 
     buildTypes {
