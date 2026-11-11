@@ -1,5 +1,7 @@
 # MAGIC GOLD
 
+[![CI](https://github.com/josephtie/magicgold/actions/workflows/ci.yml/badge.svg)](https://github.com/josephtie/magicgold/actions/workflows/ci.yml)
+
 **SaaS mobile-first de gestion commerciale pour les commerces de proximité** (Côte d'Ivoire, puis Afrique).
 *« Simple pour commencer. Puissant pour grandir. »*
 
